@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estàte</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f7f5f0;
+            --bg2: #efecea;
+            --surface: #ffffff;
+            --border: #e0dbd2;
+            --ink: #1a1714;
+            --ink2: #6b6257;
+            --ink3: #a09588;
+            --gold: #b8872a;
+            --gold-bg: #fdf6e8;
+            --gold-border: #e8c97a;
+            --green: #2a7a4f;
+            --green-bg: #eaf5f0;
+            --blue: #2a5f9e;
+            --blue-bg: #eaf0fa;
+            --red: #9e2a2a;
+            --red-bg: #faeaea;
+            --font-d: 'Cormorant Garamond', Georgia, serif;
+            --font-b: 'Outfit', sans-serif;
+            --r: 10px;
+        }
+
+        body {
+            font-family: var(--font-b);
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            height: 56px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            font-family: var(--font-d);
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .search {
+            flex: 1;
+            max-width: 320px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 12px;
+            transition: border-color 0.15s;
+        }
+
+        .search:focus-within {
+            border-color: var(--gold);
+        }
+
+        .search svg {
+            color: var(--ink3);
+            flex-shrink: 0;
+        }
+
+        .search input {
+            background: none;
+            border: none;
+            outline: none;
+            font-family: var(--font-b);
+            font-size: 13px;
+            color: var(--ink);
+            width: 100%;
+        }
+
+        .search input::placeholder {
+            color: var(--ink3);
+        }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: var(--font-b);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2e2a25;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink2);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg2);
+            color: var(--ink);
+        }
+
+        .page {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: calc(100vh - 56px);
+        }
+
+        .left {
+            padding: 28px 28px 28px 32px;
+            border-right: 1px solid var(--border);
+        }
+
+        .right {
+            padding: 28px 32px 28px 28px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-family: var(--font-d);
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--ink);
+            flex: 1;
+        }
+
+        .count-badge {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--ink2);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 9px;
+            border-radius: 20px;
+        }
+
+        .chips {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 5px 13px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--ink2);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.12s;
+            user-select: none;
+        }
+
+        .chip:hover {
+            border-color: var(--ink3);
+            color: var(--ink);
+        }
+
+        .chip.on {
+            background: var(--ink);
+            color: #fff;
+            border-color: var(--ink);
+        }
+
+        .table-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 10px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--ink3);
+            font-weight: 500;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg);
+        }
+
+        tbody tr.selected {
+            background: var(--gold-bg);
+        }
+
+        td {
+            padding: 12px 16px;
+            color: var(--ink2);
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .td-name {
+            color: var(--ink) !important;
+            font-weight: 500;
+            font-size: 13.5px;
+        }
+
+        .td-addr {
+            font-size: 11px;
+            color: var(--ink3);
+            margin-top: 1px;
+        }
+
+        .td-price {
+            font-family: var(--font-d);
+            font-size: 16px !important;
+            color: var(--gold) !important;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 9px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .s-available {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .s-rented {
+            background: var(--blue-bg);
+            color: var(--blue);
+        }
+
+        .s-sale {
+            background: var(--gold-bg);
+            color: var(--gold);
+            border: 1px solid var(--gold-border);
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        tbody tr:hover .row-actions {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.12s;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--ink3);
+            background: var(--bg2);
+            color: var(--ink);
+        }
+
+        .icon-btn.del:hover {
+            border-color: var(--red);
+            color: var(--red);
+            background: var(--red-bg);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--ink3);
+            font-size: 13px;
+        }
+
+        /* OWNERS */
+        .owner-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .owner-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.15s;
+        }
+
+        .owner-card:hover {
+            border-color: var(--ink3);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-d);
+            font-size: 16px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .c1 {
+            background: #e8f5ee;
+            color: #2a7a4f;
+        }
+
+        .c2 {
+            background: #eaf0fa;
+            color: #2a5f9e;
+        }
+
+        .c3 {
+            background: #fdf6e8;
+            color: #b8872a;
+        }
+
+        .c4 {
+            background: #f0eafa;
+            color: #6a2a9e;
+        }
+
+        .c5 {
+            background: #faeaea;
+            color: #9e2a2a;
+        }
+
+        .c6 {
+            background: #eafaf5;
+            color: #2a9e7a;
+        }
+
+        .owner-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .owner-name {
+            font-weight: 500;
+            color: var(--ink);
+            font-size: 13.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .owner-email {
+            font-size: 11px;
+            color: var(--ink3);
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .owner-meta {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .owner-meta .props {
+            font-family: var(--font-d);
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .owner-meta .lbl {
+            font-size: 10px;
+            color: var(--ink3);
+            margin-top: 2px;
+        }
+
+        /* DRAWER */
+        .drawer {
+            position: fixed;
+            top: 56px;
+            right: 0;
+            width: 380px;
+            height: calc(100vh - 56px);
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
+            transform: translateX(100%);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .drawer::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        .drawer-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .drawer-title {
+            font-family: var(--font-d);
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .drawer-body {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .drawer-price {
+            font-family: var(--font-d);
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+
+        .drawer-name {
+            font-family: var(--font-d);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .drawer-addr {
+            font-size: 12px;
+            color: var(--ink3);
+            margin-bottom: 16px;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .tag {
+            padding: 4px 11px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--ink2);
+            background: var(--bg);
+            text-transform: capitalize;
+        }
+
+        .dl {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .dl-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .dl-val {
+            font-family: var(--font-d);
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .dl-lbl {
+            font-size: 10px;
+            color: var(--ink3);
+            margin-top: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .section-sep {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ink3);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .owner-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .owner-box .info .name {
+            font-weight: 500;
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        .owner-box .info .sub {
+            font-size: 11.5px;
+            color: var(--ink3);
+        }
+
+        .drawer-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* MODAL */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 23, 20, 0.4);
+            backdrop-filter: blur(3px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            width: 500px;
+            max-width: calc(100vw - 32px);
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.97) translateY(6px);
+            transition: transform 0.2s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .overlay.open .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-family: var(--font-d);
+            font-size: 21px;
+            font-weight: 500;
+        }
+
+        .x-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--ink2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.12s;
+            flex-shrink: 0;
+        }
+
+        .x-btn:hover {
+            background: var(--bg2);
+            color: var(--ink);
+        }
+
+        .modal-body {
+            padding: 20px 22px;
+        }
+
+        .modal-footer {
+            padding: 14px 22px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .fg .s2 {
+            grid-column: span 2;
+        }
+
+        .field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--ink3);
+            margin-bottom: 5px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--ink);
+            font-family: var(--font-b);
+            font-size: 13px;
+            padding: 9px 11px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(184, 135, 42, 0.1);
+        }
+
+        .field select option {
+            background: var(--surface);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: var(--ink);
+            color: #fff;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 99;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">Estàte</div>
+        <div class="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input id="q" type="text" placeholder="Search properties or owners…" oninput="render()">
+        </div>
+        <div class="header-right">
+            <button class="btn btn-ghost" onclick="openOwnerModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Owner
+            </button>
+            <button class="btn btn-primary" onclick="openPropModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Property
+            </button>
+        </div>
+    </header>
+
+    <div class="page">
+        <div class="left">
+            <div class="section-header">
+                <div class="section-title">Properties</div>
+                <span class="count-badge" id="prop-count">0</span>
+            </div>
+            <div class="chips">
+                <span class="chip on" onclick="setFilter('all',this)">All</span>
+                <span class="chip" onclick="setFilter('available',this)">Available</span>
+                <span class="chip" onclick="setFilter('rented',this)">Rented</span>
+                <span class="chip" onclick="setFilter('sale',this)">For Sale</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="prop-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="section-header">
+                <div class="section-title">Owners</div>
+                <span class="count-badge" id="owner-count">0</span>
+            </div>
+            <div class="owner-list" id="owner-list"></div>
+        </div>
+    </div>
+
+    <!-- DETAIL DRAWER -->
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title">Property Details</div>
+            <div class="x-btn" onclick="closeDrawer()">✕</div>
+        </div>
+        <div class="drawer-body" id="drawer-body"></div>
+        <div class="drawer-footer" id="drawer-footer"></div>
+    </div>
+
+    <!-- PROPERTY MODAL -->
+    <div class="overlay" id="prop-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="prop-modal-title">New Property</div>
+                <div class="x-btn" onclick="closePropModal()">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="fg">
+                    <div class="field s2"><label>Title</label><input id="f-title" placeholder="e.g. Penthouse Jardins">
+                    </div>
+                    <div class="field s2"><label>Address</label><input id="f-addr" placeholder="Street, City"></div>
+                    <div class="field"><label>Type</label><select id="f-type">
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="land">Land</option>
+                        </select></div>
+                    <div class="field"><label>Status</label><select id="f-status">
+                            <option value="available">Available</option>
+                            <option value="rented">Rented</option>
+                            <option value="sale">For Sale</option>
+                        </select></div>
+                    <div class="field"><label>Price (R$)</label><input id="f-price" type="number" placeholder="450000">
+                    </div>
+                    <div class="field"><label>Area (m²)</label><input id="f-area" type="number" placeholder="85"></div>
+                    <div class="field"><label>Bedrooms</label><input id="f-beds" type="number" placeholder="2"></div>
+                    <div class="field"><label>Bathrooms</label><input id="f-baths" type="number" placeholder="1"></div>
+                    <div class="field s2"><label>Owner</label><select id="f-owner"></select></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closePropModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProp()">Save Property</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OWNER MODAL -->
+    <div class="overlay" id="owner-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">New Owner</div>
+                <div class="x-btn" onclick="closeOwnerModal()">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="fg">
+                    <div class="field"><label>Full Name</label><input id="o-name" placeholder="Jane Doe"></div>
+                    <div class="field"><label>Phone</label><input id="o-phone" placeholder="+55 11 99999-0000"></div>
+                    <div class="field s2"><label>Email</label><input id="o-email" type="email"
+                            placeholder="jane@email.com"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeOwnerModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveOwner()">Save Owner</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let owners = [
+            { id: 1, name: 'Isabela Ferreira', email: 'isabela@email.com', phone: '+55 11 98765-4321', c: 'c1' },
+            { id: 2, name: 'Rafael Mendonça', email: 'rafael@email.com', phone: '+55 21 97654-3210', c: 'c2' },
+            { id: 3, name: 'Camila Souza', email: 'camila@email.com', phone: '+55 31 96543-2109', c: 'c3' },
+            { id: 4, name: 'Bruno Carvalho', email: 'bruno@email.com', phone: '+55 11 95432-1098', c: 'c4' },
+        ];
+        let properties = [
+            { id: 1, title: 'Penthouse Jardins', addr: 'Rua Augusta, 1200 — São Paulo', type: 'apartment', status: 'sale', price: 2850000, area: 220, beds: 4, baths: 3, ownerId: 1 },
+            { id: 2, title: 'Casa Alto de Pinheiros', addr: 'Rua Dep. Lacerda, 89 — São Paulo', type: 'house', status: 'available', price: 1200000, area: 340, beds: 5, baths: 4, ownerId: 1 },
+            { id: 3, title: 'Studio Ipanema', addr: 'Av. Vieira Souto, 340 — Rio de Janeiro', type: 'apartment', status: 'rented', price: 4800, area: 52, beds: 1, baths: 1, ownerId: 2 },
+            { id: 4, title: 'Cobertura Leblon', addr: 'Rua Carlos Góis, 50 — Rio de Janeiro', type: 'apartment', status: 'sale', price: 4200000, area: 310, beds: 4, baths: 3, ownerId: 2 },
+            { id: 5, title: 'Loja Savassi', addr: 'Av. do Contorno, 200 — Belo Horizonte', type: 'commercial', status: 'available', price: 8500, area: 120, beds: 0, baths: 1, ownerId: 3 },
+            { id: 6, title: 'Sítio Recanto Verde', addr: 'Rod. MG-030, Km 18 — Nova Lima', type: 'land', status: 'sale', price: 680000, area: 2000, beds: 0, baths: 0, ownerId: 3 },
+            { id: 7, title: 'Flat Moema', addr: 'Av. Ibirapuera, 2400 — São Paulo', type: 'apartment', status: 'rented', price: 3200, area: 65, beds: 2, baths: 1, ownerId: 4 },
+            { id: 8, title: 'Galpão Industrial', addr: 'Rod. Anhanguera, Km 30 — Campinas', type: 'commercial', status: 'available', price: 15000, area: 800, beds: 0, baths: 2, ownerId: 4 },
+        ];
+        let nextOid = 5, nextPid = 9, filter = 'all', editId = null, selectedId = null;
+        const colors = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'];
+        const getOwner = id => owners.find(o => o.id === id);
+        const initials = n => n.split(' ').slice(0, 2).map(x => x[0]).join('').toUpperCase();
+        const fmtPrice = (p, s) => p ? 'R$ ' + p.toLocaleString('pt-BR') + (s === 'rented' ? '/mês' : '') : '—';
+        const statusMap = { available: 'Available', rented: 'Rented', sale: 'For Sale' };
+        const statusCls = { available: 's-available', rented: 's-rented', sale: 's-sale' };
+
+        function setFilter(f, el) {
+            filter = f;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+            el.classList.add('on');
+            render();
+        }
+
+        function render() {
+            const q = document.getElementById('q').value.toLowerCase();
+            let list = properties.filter(p => {
+                if (filter !== 'all' && p.status !== filter) return false;
+                if (!q) return true;
+                const o = getOwner(p.ownerId);
+                return p.title.toLowerCase().includes(q) || p.addr.toLowerCase().includes(q) || (o && o.name.toLowerCase().includes(q));
+            });
+
+            document.getElementById('prop-count').textContent = list.length;
+            const tbody = document.getElementById('prop-body');
+            tbody.innerHTML = list.length ? list.map(p => `
+    <tr onclick="openDrawer(${p.id})" class="${selectedId === p.id ? 'selected' : ''}">
+      <td><div class="td-name">${p.title}</div><div class="td-addr">${p.addr}</div></td>
+      <td style="text-transform:capitalize">${p.type}</td>
+      <td class="td-price">${fmtPrice(p.price, p.status)}</td>
+      <td><span class="status ${statusCls[p.status]}">${statusMap[p.status]}</span></td>
+      <td onclick="event.stopPropagation()">
+        <div class="row-actions">
+          <div class="icon-btn" onclick="openPropModal(${p.id})" title="Edit">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div class="icon-btn del" onclick="delProp(${p.id})" title="Delete">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </div>
+        </div>
+      </td>
+    </tr>`).join('')
+                : '<tr><td colspan="5"><div class="empty">No properties found</div></td></tr>';
+
+            let olist = owners.filter(o => !q || o.name.toLowerCase().includes(q) || o.email.toLowerCase().includes(q));
+            document.getElementById('owner-count').textContent = olist.length;
+            document.getElementById('owner-list').innerHTML = olist.length ? olist.map(o => {
+                const n = properties.filter(p => p.ownerId === o.id).length;
+                return `<div class="owner-card">
+      <div class="avatar ${o.c}">${initials(o.name)}</div>
+      <div class="owner-info"><div class="owner-name">${o.name}</div><div class="owner-email">${o.email}</div></div>
+      <div class="owner-meta"><div class="props">${n}</div><div class="lbl">${n === 1 ? 'property' : 'properties'}</div></div>
+    </div>`;
+            }).join('') : '<div class="empty">No owners found</div>';
+
+            if (selectedId) {
+                const p = properties.find(x => x.id === selectedId);
+                p ? populateDrawer(p) : closeDrawer();
+            }
+        }
+
+        function openDrawer(id) {
+            selectedId = id;
+            const p = properties.find(x => x.id === id);
+            if (!p) return;
+            populateDrawer(p);
+            document.getElementById('drawer').classList.add('open');
+            render();
+        }
+
+        function populateDrawer(p) {
+            const o = getOwner(p.ownerId);
+            document.getElementById('drawer-body').innerHTML = `
+    <div class="drawer-price">${fmtPrice(p.price, p.status)}</div>
+    <div class="drawer-name">${p.title}</div>
+    <div class="drawer-addr">📍 ${p.addr}</div>
+    <div class="tag-row">
+      <span class="status ${statusCls[p.status]}">${statusMap[p.status]}</span>
+      <span class="tag">${p.type}</span>
+      ${p.area ? `<span class="tag">${p.area} m²</span>` : ''}
+    </div>
+    ${(p.beds || p.baths) ? `<div class="dl">
+      ${p.beds ? `<div class="dl-item"><div class="dl-val">${p.beds}</div><div class="dl-lbl">Bedrooms</div></div>` : ''}
+      ${p.baths ? `<div class="dl-item"><div class="dl-val">${p.baths}</div><div class="dl-lbl">Bathrooms</div></div>` : ''}
+    </div>` : ''}
+    <div class="section-sep">Owner</div>
+    ${o ? `<div class="owner-box">
+      <div class="avatar ${o.c}">${initials(o.name)}</div>
+      <div class="info"><div class="name">${o.name}</div><div class="sub">${o.email}</div><div class="sub">${o.phone}</div></div>
+    </div>` : '<p style="color:var(--ink3);font-size:13px">No owner assigned</p>'}`;
+            document.getElementById('drawer-footer').innerHTML = `
+    <button class="btn btn-primary" style="flex:1" onclick="openPropModal(${p.id});closeDrawer()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Edit
+    </button>
+    <button class="btn btn-ghost" style="color:var(--red);border-color:rgba(158,42,42,0.25)" onclick="delProp(${p.id});closeDrawer()">Delete</button>`;
+        }
+
+        function closeDrawer() {
+            selectedId = null;
+            document.getElementById('drawer').classList.remove('open');
+            render();
+        }
+
+        function openPropModal(id) {
+            editId = id || null;
+            const p = id ? properties.find(x => x.id === id) : null;
+            document.getElementById('prop-modal-title').textContent = p ? 'Edit Property' : 'New Property';
+            const sel = document.getElementById('f-owner');
+            sel.innerHTML = owners.map(o => `<option value="${o.id}">${o.name}</option>`).join('');
+            document.getElementById('f-title').value = p?.title || '';
+            document.getElementById('f-addr').value = p?.addr || '';
+            document.getElementById('f-type').value = p?.type || 'apartment';
+            document.getElementById('f-status').value = p?.status || 'available';
+            document.getElementById('f-price').value = p?.price || '';
+            document.getElementById('f-area').value = p?.area || '';
+            document.getElementById('f-beds').value = p?.beds || '';
+            document.getElementById('f-baths').value = p?.baths || '';
+            if (p) sel.value = p.ownerId;
+            document.getElementById('prop-overlay').classList.add('open');
+        }
+
+        function closePropModal() { document.getElementById('prop-overlay').classList.remove('open'); }
+
+        function saveProp() {
+            const title = document.getElementById('f-title').value.trim();
+            const addr = document.getElementById('f-addr').value.trim();
+            if (!title || !addr) return alert('Title and address are required.');
+            const data = { title, addr, type: document.getElementById('f-type').value, status: document.getElementById('f-status').value, price: parseFloat(document.getElementById('f-price').value) || 0, area: parseInt(document.getElementById('f-area').value) || 0, beds: parseInt(document.getElementById('f-beds').value) || 0, baths: parseInt(document.getElementById('f-baths').value) || 0, ownerId: parseInt(document.getElementById('f-owner').value) };
+            if (editId) { const i = properties.findIndex(p => p.id === editId); properties[i] = { ...properties[i], ...data }; toast('Property updated'); }
+            else { properties.push({ id: nextPid++, ...data }); toast('Property added'); }
+            closePropModal(); render();
+        }
+
+        function delProp(id) {
+            if (!confirm('Delete this property?')) return;
+            properties = properties.filter(p => p.id !== id);
+            toast('Property deleted'); render();
+        }
+
+        function openOwnerModal() {
+            ['o-name', 'o-email', 'o-phone'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('owner-overlay').classList.add('open');
+        }
+        function closeOwnerModal() { document.getElementById('owner-overlay').classList.remove('open'); }
+        function saveOwner() {
+            const name = document.getElementById('o-name').value.trim(), email = document.getElementById('o-email').value.trim();
+            if (!name || !email) return alert('Name and email are required.');
+            owners.push({ id: nextOid++, name, email, phone: document.getElementById('o-phone').value.trim(), c: colors[(nextOid - 2) % colors.length] });
+            closeOwnerModal(); toast('Owner registered'); render();
+        }
+
+        document.getElementById('prop-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closePropModal(); });
+        document.getElementById('owner-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeOwnerModal(); });
+
+        function toast(msg) {
+            const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 2400);
+        }
+
+        render();
+    </script>
+</body>
+
+</html>

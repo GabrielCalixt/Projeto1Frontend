@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Imobly</title>
+</head>
+
+<body>
+    <!-- Cabeçalho de informações do sistema -->
+    <header>
+        <div class="brand">Imobly</div>
+        <div class="actions">
+            <button class="add-button" onclick="openOwnerModal()">
+                Novo proprietário
+            </button>
+            <button class="add-button" id="open_property_modal" onclick="openPropertyModal()">
+                Nova propriedade
+            </button>
+        </div>
+    </header>
+
+    <div class="page">
+        <!-- Property table -->
+        <section class="properties">
+            <h3>Imóveis</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Endereço</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Preço (R$)</th>
+                            <th>Área (m²)</th>
+                            <th>Quartos</th>
+                            <th>Banheiros</th>
+                            <th>Proprietário</th>
+                        </tr>
+                    </thead>
+                    <tbody id="properties_table_body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- Owner table -->
+        <section class="owners" id="owners">
+            <h3>Proprietários</h3>
+        </section>
+    </div>
+
+    <!-- PROPERTY MODAL -->
+    <div class="modal-container" id="property_container">
+        <div class="modal">
+            <div class="modal-header">
+                <p>Nova propriedade</p>
+                <button onclick="closePropertyModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <label for="p_title">Título</label>
+                <input id="p_title" placeholder="ex: Penthouse Jardins">
+                <label for="p_addr">Endereço</label>
+                <input id="p_addr" placeholder="Cidade, Bairro, Rua, Número">
+                <label for="p_type">Tipo</label>
+                <select id="p_type">
+                    <option value="apartment">Apartamento</option>
+                    <option value="house">Casa</option>
+                    <option value="commercial">Comercial</option>
+                    <option value="land">Terreno</option>
+                </select>
+                <label for="p_status">Status</label>
+                <select id="p_status">
+                    <option value="available">Disponível</option>
+                    <option value="rented">Alugado</option>
+                    <option value="sale">À venda</option>
+                </select>
+                <label for="p_value">Valor (R$)</label>
+                <input id="p_value" type="number" placeholder="1500">
+                <label for="p_area">Área (m²)</label>
+                <input id="p_area" type="number" placeholder="85">
+                <label for="p_beds">Quartos</label>
+                <input id="p_beds" type="number" placeholder="2">
+                <label for="p_baths">Banheiros</label>
+                <input id="p_baths" type="number" placeholder="1">
+                <label for="p_owner">Proprietário</label>
+                <select id="p_owner"></select>
+            </div>
+            <button class="save-button" onclick="newProperty()">Salvar</button>
+        </div>
+    </div>
+
+    <!-- OWNER MODAL -->
+    <div class="modal-container" id="owner_container">
+        <div class="modal">
+            <div class="modal-header">
+                <p>Novo proprietário</p>
+                <button onclick="closeOwnerModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <label for="o_name">Nome</label>
+                <input id="o_name" placeholder="ex: João Silva">
+                <label for="o_email">Email</label>
+                <input id="o_email" type="email" placeholder="ex: joao.silva@email.com">
+                <label for="o_phone">Telefone</label>
+                <input id="o_phone" type="tel" placeholder="ex: (11) 99999-9999">
+            </div>
+            <button class="save-button" onclick="newOwner()">Salvar</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
