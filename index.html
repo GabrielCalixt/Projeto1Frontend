@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="img/imobly-icon.svg" sizes="any" type="image/svg">
 
     <title>Imobly</title>
 </head>
@@ -62,7 +63,7 @@
                 <p>Nova propriedade</p>
                 <button onclick="closePropertyModal()">✕</button>
             </div>
-            <div class="modal-body">
+            <form class="modal-body" id="property_form">
                 <label for="p_title">Título</label>
                 <input id="p_title" placeholder="ex: Penthouse Jardins">
                 <label for="p_addr">Endereço</label>
@@ -90,7 +91,7 @@
                 <input id="p_baths" type="number" placeholder="1">
                 <label for="p_owner">Proprietário</label>
                 <select id="p_owner"></select>
-            </div>
+            </form>
             <button class="save-button" onclick="newProperty()">Salvar</button>
         </div>
     </div>
@@ -102,14 +103,14 @@
                 <p>Novo proprietário</p>
                 <button onclick="closeOwnerModal()">✕</button>
             </div>
-            <div class="modal-body">
+            <form class="modal-body" id="owner_form">
                 <label for="o_name">Nome</label>
                 <input id="o_name" placeholder="ex: João Silva">
                 <label for="o_email">Email</label>
                 <input id="o_email" type="email" placeholder="ex: joao.silva@email.com">
                 <label for="o_phone">Telefone</label>
                 <input id="o_phone" type="tel" placeholder="ex: (11) 99999-9999">
-            </div>
+            </form>
             <button class="save-button" onclick="newOwner()">Salvar</button>
         </div>
     </div>

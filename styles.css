@@ -1,5 +1,6 @@
-body,
-ul,
+body {
+    background-color: rgb(225, 222, 199);
+}
 
 li {
     font-family: tahoma;
@@ -16,6 +17,16 @@ header {
     display: flex;
     padding: 10px 32px;
     gap: 24px;
+}
+
+.brand {
+    font-family: oswald;
+    font-size: x-large;
+    font-weight: 700;
+    color: #F0C040;
+    background-color: #1B3A6B;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .actions {
@@ -42,6 +53,12 @@ header {
 .banner img {
     margin: 0px 0px 0px 0px;
     width: 100%;
+}
+
+.properties {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 22px;
 }
 
 .table-wrapper {
@@ -73,7 +90,6 @@ th {
 
 tbody tr {
     border-bottom: 1px solid var(--border);
-    cursor: pointer;
     transition: background 0.12s;
 }
 
@@ -85,7 +101,15 @@ tbody tr:hover {
     background: var(--bg);
 }
 
-tbody tr.selected {
+.close-button {
+    background: none;
+    border: none;
+    color: var(--ink2);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+tbody tr.close {
     background: var(--gold-bg);
 }
 
@@ -199,7 +223,6 @@ input {
     overflow-wrap: break-word;
 }
 
-/* On mouse-over, add a deeper shadow */
 .owner-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }

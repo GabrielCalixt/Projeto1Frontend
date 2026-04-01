@@ -56,9 +56,18 @@ const postItem = async (inputProduct, inputQuantity, inputPrice) => {
 const insertButton = (parent) => {
   let span = document.createElement("span");
   let txt = document.createTextNode("\u00D7");
-  span.className = "close";
+  span.className = "close-button";
   span.appendChild(txt);
   parent.appendChild(span);
+  span.onclick = function () {
+      let div = this.parentElement.parentElement;
+      const nomeItem = div.getElementsByTagName('td')[0].innerHTML
+      if (confirm("Você tem certeza?")) {
+        div.remove()
+        deleteProperty(nomeItem)
+        alert("Removido!")
+      }
+    }
 }
 
 
@@ -68,7 +77,7 @@ const insertButton = (parent) => {
   --------------------------------------------------------------------------------------
 */
 const removeElement = () => {
-  let close = document.getElementsByClassName("close");
+  let close = document.getElementsByClassName("close-button");
   // var table = document.getElementById('myTable');
   let i;
   for (i = 0; i < close.length; i++) {
@@ -92,6 +101,18 @@ const removeElement = () => {
 const deleteItem = (item) => {
   console.log(item)
   let url = 'http://127.0.0.1:5000/produto?nome=' + item;
+  fetch(url, {
+    method: 'delete'
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
+const deleteProperty = (item) => {
+  console.log(item)
+  let url = 'http://127.0.0.1:5000/property?title=' + item;
   fetch(url, {
     method: 'delete'
   })
@@ -179,6 +200,7 @@ function newOwner() {
   postOwner(name, email, phone);
   alert("Proprietário adicionado!");
   closeOwnerModal();
+  clearForm("owner_form");
 }
 
 function postOwner(name, email, phone) {
@@ -272,6 +294,7 @@ function newProperty() {
   postProperty(title, address, value, rooms, bathrooms, ownerId, type, status, area);
   alert("Propriedade adicionada!");
   closePropertyModal();
+  clearForm("property_form");
 }
 
 function postProperty(title, address, value, rooms, bathrooms, ownerId, type, status, area) {
@@ -333,6 +356,10 @@ function fillProperties(responseData) {
   responseData.forEach(property => {
     let row = tableBody.insertRow();
     for (let i = 0; i < columns.length; i++) {
+      // add delete button
+      if (i === columns.length - 1) {
+        insertButton(row.insertCell(-1));
+      }
       let cell = row.insertCell(i);
       if (columns[i] === "owner_name") {
         cell.innerHTML = getOwnerName(property.owner_id);
@@ -356,6 +383,10 @@ function getOwnerName(ownerId) {
 function render() {
   getOwners();
   getProperties();
+}
+
+function clearForm(formId) {
+  document.getElementById(formId).reset()
 }
 
 render();
