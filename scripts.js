@@ -1,170 +1,4 @@
-/*
-  --------------------------------------------------------------------------------------
-  Função para obter a lista existente do servidor via requisição GET
-  --------------------------------------------------------------------------------------
-*/
-const getList = async () => {
-  let url = 'http://127.0.0.1:5000/produtos';
-  fetch(url, {
-    method: 'get',
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      data.produtos.forEach(item => insertList(item.nome, item.quantidade, item.valor))
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-/*
-  --------------------------------------------------------------------------------------
-  Chamada da função para carregamento inicial dos dados
-  --------------------------------------------------------------------------------------
-*/
-// getList()
-
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para colocar um item na lista do servidor via requisição POST
-  --------------------------------------------------------------------------------------
-*/
-const postItem = async (inputProduct, inputQuantity, inputPrice) => {
-  const formData = new FormData();
-  formData.append('nome', inputProduct);
-  formData.append('quantidade', inputQuantity);
-  formData.append('valor', inputPrice);
-
-  let url = 'http://127.0.0.1:5000/produto';
-  fetch(url, {
-    method: 'post',
-    body: formData
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para criar um botão close para cada item da lista
-  --------------------------------------------------------------------------------------
-*/
-const insertButton = (parent) => {
-  let span = document.createElement("span");
-  let txt = document.createTextNode("\u00D7");
-  span.className = "close-button";
-  span.appendChild(txt);
-  parent.appendChild(span);
-  span.onclick = function () {
-      let div = this.parentElement.parentElement;
-      const nomeItem = div.getElementsByTagName('td')[0].innerHTML
-      if (confirm("Você tem certeza?")) {
-        div.remove()
-        deleteProperty(nomeItem)
-        alert("Removido!")
-      }
-    }
-}
-
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para remover um item da lista de acordo com o click no botão close
-  --------------------------------------------------------------------------------------
-*/
-const removeElement = () => {
-  let close = document.getElementsByClassName("close-button");
-  // var table = document.getElementById('myTable');
-  let i;
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function () {
-      let div = this.parentElement.parentElement;
-      const nomeItem = div.getElementsByTagName('td')[0].innerHTML
-      if (confirm("Você tem certeza?")) {
-        div.remove()
-        deleteItem(nomeItem)
-        alert("Removido!")
-      }
-    }
-  }
-}
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para deletar um item da lista do servidor via requisição DELETE
-  --------------------------------------------------------------------------------------
-*/
-const deleteItem = (item) => {
-  console.log(item)
-  let url = 'http://127.0.0.1:5000/produto?nome=' + item;
-  fetch(url, {
-    method: 'delete'
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-const deleteProperty = (item) => {
-  console.log(item)
-  let url = 'http://127.0.0.1:5000/property?title=' + item;
-  fetch(url, {
-    method: 'delete'
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para adicionar um novo item com nome, quantidade e valor 
-  --------------------------------------------------------------------------------------
-*/
-const newItem = () => {
-  let inputProduct = document.getElementById("newInput").value;
-  let inputQuantity = document.getElementById("newQuantity").value;
-  let inputPrice = document.getElementById("newPrice").value;
-
-  if (inputProduct === '') {
-    alert("Escreva o nome de um item!");
-  } else if (isNaN(inputQuantity) || isNaN(inputPrice)) {
-    alert("Quantidade e valor precisam ser números!");
-  } else {
-    insertList(inputProduct, inputQuantity, inputPrice)
-    postItem(inputProduct, inputQuantity, inputPrice)
-    alert("Item adicionado!")
-  }
-}
-
-/*
-  --------------------------------------------------------------------------------------
-  Função para inserir items na lista apresentada
-  --------------------------------------------------------------------------------------
-*/
-const insertList = (nameProduct, quantity, price) => {
-  var item = [nameProduct, quantity, price]
-  var table = document.getElementById('myTable');
-  var row = table.insertRow();
-
-  for (var i = 0; i < item.length; i++) {
-    var cel = row.insertCell(i);
-    cel.textContent = item[i];
-  }
-  insertButton(row.insertCell(-1))
-  document.getElementById("newInput").value = "";
-  document.getElementById("newQuantity").value = "";
-  document.getElementById("newPrice").value = "";
-
-  removeElement()
-}
-
+// Funções para abrir e fechar os modais de cadastro de propriedade e proprietário
 const property_container = document.getElementById("property_container");
 const owner_container = document.getElementById("owner_container");
 
@@ -184,6 +18,8 @@ function closeOwnerModal() {
   owner_container.classList.remove('show');
 }
 
+// Funções de manipulação de proprietários
+
 function newOwner() {
   const name = document.getElementById("o_name").value;
   const email = document.getElementById("o_email").value;
@@ -201,6 +37,7 @@ function newOwner() {
   alert("Proprietário adicionado!");
   closeOwnerModal();
   clearForm("owner_form");
+  getOwners();
 }
 
 function postOwner(name, email, phone) {
@@ -208,7 +45,7 @@ function postOwner(name, email, phone) {
   formData.append('name', name);
   formData.append('email', email);
   formData.append('phone', phone);
-  fetch('http://127.0.0.1:5000/owner', {
+  fetch('http://127.0.0.1:8888/owner', {
     method: 'post',
     body: formData
   })
@@ -223,7 +60,7 @@ function fillOwners(responseData) {
   owners = responseData.map(owner => ({ id: owner.id, name: owner.name }));
 
   let ownersList = document.getElementById("owners");
-
+  ownersList.innerHTML = "";
   responseData.forEach(owner => {
     let ownerCard = document.createElement("div");
     ownerCard.className = "owner-card";
@@ -253,7 +90,7 @@ function addOwnerToSelect(owner) {
 }
 
 const getOwners = async () => {
-  let url = 'http://127.0.0.1:5000/owner';
+  let url = 'http://127.0.0.1:8888/owner';
   fetch(url, {
     method: 'get',
   })
@@ -271,6 +108,14 @@ const getOwners = async () => {
       console.error('Error:', error);
     });
 }
+
+function getOwnerName(ownerId) {
+  if (owners.length === 0) return 'N/A';
+  const owner = owners.find(o => o.id === ownerId);
+  return owner ? owner.name : 'N/A';
+}
+
+// Funções de manipulação de propriedades
 
 function newProperty() {
   const title = document.getElementById("p_title").value;
@@ -295,6 +140,7 @@ function newProperty() {
   alert("Propriedade adicionada!");
   closePropertyModal();
   clearForm("property_form");
+  getProperties();
 }
 
 function postProperty(title, address, value, rooms, bathrooms, ownerId, type, status, area) {
@@ -308,7 +154,7 @@ function postProperty(title, address, value, rooms, bathrooms, ownerId, type, st
   formData.append('type', type);
   formData.append('status', status);
   formData.append('area', area);
-  fetch('http://127.0.0.1:5000/property', {
+  fetch('http://127.0.0.1:8888/property', {
     method: 'post',
     body: formData
   })
@@ -319,7 +165,7 @@ function postProperty(title, address, value, rooms, bathrooms, ownerId, type, st
 }
 
 const getProperties = async () => {
-  let url = 'http://127.0.0.1:5000/property';
+  let url = 'http://127.0.0.1:8888/property';
   fetch(url, {
     method: 'get',
   })
@@ -338,10 +184,21 @@ const getProperties = async () => {
     });
 }
 
+const deleteProperty = (item) => {
+  console.log(item)
+  let url = 'http://127.0.0.1:8888/property?title=' + item;
+  fetch(url, {
+    method: 'delete'
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
 function fillProperties(responseData) {
   let tableBody = document.querySelector("#properties_table_body");
   const columns = ["title", "address", "type", "status", "value", "area", "rooms", "bathrooms", "owner_name"];
-  const numberOfRows = responseData.length;
   const dictType = {
     "apartment": "Apartamento",
     "house": "Casa",
@@ -353,12 +210,13 @@ function fillProperties(responseData) {
     "available": "Disponível"
   }
 
+  tableBody.innerHTML = "";
   responseData.forEach(property => {
     let row = tableBody.insertRow();
     for (let i = 0; i < columns.length; i++) {
       // add delete button
       if (i === columns.length - 1) {
-        insertButton(row.insertCell(-1));
+        insertDeleteButton(row.insertCell(-1));
       }
       let cell = row.insertCell(i);
       if (columns[i] === "owner_name") {
@@ -374,11 +232,26 @@ function fillProperties(responseData) {
   })
 }
 
-function getOwnerName(ownerId) {
-  if (owners.length === 0) return 'N/A';
-  const owner = owners.find(o => o.id === ownerId);
-  return owner ? owner.name : 'N/A';
+// Função para inserir o botão de delete em cada linha da tabela de propriedades
+
+const insertDeleteButton = (parent) => {
+  let span = document.createElement("span");
+  let txt = document.createTextNode("\u00D7");
+  span.className = "close-button";
+  span.appendChild(txt);
+  parent.appendChild(span);
+  span.onclick = function () {
+    let div = this.parentElement.parentElement;
+    const nomeItem = div.getElementsByTagName('td')[0].innerHTML
+    if (confirm("Você tem certeza?")) {
+      div.remove()
+      deleteProperty(nomeItem)
+      alert("Removido!")
+    }
+  }
 }
+
+// Funções de renderização de dados na tela
 
 function render() {
   getOwners();
