@@ -60,7 +60,9 @@ function fillOwners(responseData) {
   owners = responseData.map(owner => ({ id: owner.id, name: owner.name }));
 
   let ownersList = document.getElementById("owners");
-  ownersList.innerHTML = "";
+  ownersList.innerHTML = "<h3>Proprietários</h3>";
+  let select = document.getElementById("p_owner");
+  select.innerHTML = "";
   responseData.forEach(owner => {
     let ownerCard = document.createElement("div");
     ownerCard.className = "owner-card";
@@ -77,12 +79,11 @@ function fillOwners(responseData) {
     ownerCard.appendChild(ownerEmail);
     ownerCard.appendChild(ownerPhone);
     ownersList.appendChild(ownerCard);
-    addOwnerToSelect(owner);
+    addOwnerToSelect(owner, select);
   });
 }
 
-function addOwnerToSelect(owner) {
-  let select = document.getElementById("p_owner");
+function addOwnerToSelect(owner, select) {
   let option = document.createElement("option");
   option.value = owner.id;
   option.textContent = owner.name;
